@@ -92,12 +92,9 @@ To https://github.com/tigerruncode/centos.git
 
 
 
-
-
-#################
-
-再次上传文件修改后的
-###########
+#########
+新增文件上传
+########
 # ll
 总用量 32
 -rw-r--r--. 1 root root 15149 5月  26 17:07 docker push
@@ -121,4 +118,34 @@ To https://github.com/tigerruncode/centos.git
    cae9dfc..deeb0fd  master -> master
 [root@localhost dockerpushcent7]# 
 
+
+
+#################
+
+再次上传文件修改后的
+###########
+#############
+
+# git add push文件到github建立github私有仓库：cent7cyx2018525
+[root@localhost dockerpushcent7]# git commit -m "同一个文件修改后提交并push"
+[master f813b6e] 同一个文件修改后提交并push
+ 1 file changed, 39 insertions(+)
+[root@localhost dockerpushcent7]# git push origin master 
+git hiUsername for 'https://github.^C     
+[root@localhost dockerpushcent7]# git push origin master 
+Username for 'https://github.com': tigerruncode
+Password for 'https://tigerruncode@github.com': 
+Counting objects: 5, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 745 bytes | 0 bytes/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/tigerruncode/centos.git
+   deeb0fd..f813b6e  master -> master
+[root@localhost dockerpushcent7]# 
+
+
+
+##########
 
