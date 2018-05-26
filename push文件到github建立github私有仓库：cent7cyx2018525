@@ -1,0 +1,85 @@
+##########
+在你要push的文件的目录 右健打开终端，建立github私有仓库
+#############
+# git init 
+初始化空的 Git 版本库于 /root/Desktop/523xiehao/dockerjieguo/docker push/.git/
+[root@localhost docker push]# ls
+docker push  docker常用命令  仓库基本使用
+[root@localhost docker push]# ll
+总用量 28
+-rw-r--r--. 1 root root 15149 5月  26 17:07 docker push
+-rw-r--r--. 1 root root  1323 5月  26 17:30 docker常用命令
+-rw-r--r--. 1 root root  4906 5月  26 17:43 仓库基本使用
+[root@localhost docker push]# cd .
+./    ../   .git/ 
+[root@localhost docker push]# cd .git/
+[root@localhost .git]# ls
+branches  config  description  HEAD  hooks  info  objects  refs
+[root@localhost .git]# cp config config.bak
+[root@localhost .git]# vim config
+ 
+#######
+配置
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+########
+[root@localhost .git]#  git config --global user.name "tigerruncode"
+ 
+[root@localhost .git]#  git config --global user.email 23#######2@qq.com
+[root@localhost .git]# git config --list
+git config --list
+user.name=flymegocuser.name=tigerruncode
+user.email=23#######2@qq.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+[root@localhost .git]# cat config
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[root@localhost .git]# git --version
+git version 1.8.3.1
+[root@localhost .git]# cd ..
+[root@localhost docker push]# ls
+docker push  docker常用命令  仓库基本使用
+[root@localhost docker push]# git add .
+[root@localhost docker push]# ll
+总用量 28
+-rw-r--r--. 1 root root 15149 5月  26 17:07 docker push
+-rw-r--r--. 1 root root  1323 5月  26 17:30 docker常用命令
+-rw-r--r--. 1 root root  4906 5月  26 17:43 仓库基本使用
+[root@localhost dockerpushcent7]# git commit -m "First commit"
+[master（根提交） 2426bc4] First commit
+ 3 files changed, 375 insertions(+)
+ create mode 100644 docker push
+ create mode 100644 "docker\345\270\270\347\224\250\345\221\275\344\273\244"
+ create mode 100644 "\344\273\223\345\272\223\345\237\272\346\234\254\344\275\277\347\224\250"
+
+[root@localhost dockerpushcent7]#  git remote add origin https://github.com/tigerruncode/centos.git
+[root@localhost dockerpushcent7]# ll
+总用量 32
+-rw-r--r--. 1 root root 15149 5月  26 17:07 docker push
+-rw-r--r--. 1 root root  1323 5月  26 17:30 docker常用命令
+-rw-r--r--. 1 root root    27 5月  26 18:26 README.md
+-rw-r--r--. 1 root root  4906 5月  26 17:43 仓库基本使用
+[root@localhost dockerpushcent7]# rm -rf README.md
+
+################
+push 文件
+####################
+[root@localhost dockerpushcent7]#  git push origin master
+Username for 'https://github.com': tigerruncode 
+Password for 'https://tigerruncode@github.com': 
+Counting objects: 8, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (7/7), 6.55 KiB | 0 bytes/s, done.
+Total 7 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/tigerruncode/centos.git
+   312beb4..cae9dfc  master -> master
+[root@localhost dockerpushcent7]# 
+
