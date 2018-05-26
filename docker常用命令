@@ -1,0 +1,21 @@
+docker常用命令
+
+$ docker commit --author "yixuan.cheng <2319516602@qq.com>" --message "修改了yum网络源，yum install openssh-clients" 71e90b61a327 docker.io/cs2cdocker/cs2c_apachev7.4ssh:cyx20180525build11
+
+
+
+########
+
+只有100的星星的镜像是好镜像 下载没问题
+
+root@openshift ~]# docker search nginx --filter=stars=100
+INDEX       NAME                                               DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+docker.io   docker.io/nginx                                    Official build of Nginx.                        8564      [OK]       
+docker.io   docker.io/jwilder/nginx-proxy                      Automated Nginx reverse proxy for docker c...   1335                 [OK]
+docker.io   docker.io/richarvey/nginx-php-fpm                  Container running Nginx + PHP-FPM capable ...   547                  [OK]
+docker.io   docker.io/jrcs/letsencrypt-nginx-proxy-companion   LetsEncrypt container to use with nginx as...   368                  [OK]
+docker.io   docker.io/kong                                     Open-source Microservice & API Management ...   187       [OK]       
+docker.io   docker.io/webdevops/php-nginx                      Nginx with PHP-FPM                              103                  [OK]
+[root@openshift ~]# 
+
+

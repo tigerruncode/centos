@@ -1,0 +1,222 @@
+#############
+制作镜像
+###########
+$ docker commit --author "yixuan.cheng <2319516602@qq.com>" --message "修改了yum网络源，yum install openssh-clients" 71e90b61a327 docker.io/cs2cdocker/cs2c_apachev7.4ssh:cyx20180525build11
+
+
+
+###docker push
+
+# docker ps
+CONTAINER ID        IMAGE                              COMMAND             CREATED             STATUS              PORTS                                          NAMES
+78f97056c846        513d835963b9                       "/run.sh"           22 hours ago        Up 22 hours         22/tcp, 80/tcp                                 ssh22
+ffb8b4b1954a        513d835963b9                       "/run.sh"           22 hours ago        Up 22 hours         22/tcp, 80/tcp                                 ssh21
+6df47c3bc26c        docker.io/cs2cdocker/cs2c_apache   "/run.sh"           24 hours ago        Up 24 hours         0.0.0.0:32774->22/tcp, 0.0.0.0:32773->80/tcp   ssh12
+6505231a3e45        docker.io/cs2cdocker/cs2c_apache   "/run.sh"           24 hours ago        Up 24 hours         0.0.0.0:32772->22/tcp, 0.0.0.0:32771->80/tcp   ssh11
+71e90b61a327        docker.io/cs2cdocker/cs2c_apache   "/run.sh"           25 hours ago        Up 25 hours         0.0.0.0:32770->22/tcp, 0.0.0.0:32769->80/tcp   boring_curie
+[root@build11yixuan20180519 ~]# docker commit --author "yixuan.cheng <2319516602@qq.com>" --message "修改了yum网络源，yum install openssh-clients" 71e90b61a327 docker.io/cs2cdocker/cs2c_apachev7.4ssh:cyx20180525build11
+sha256:477a4caf8dac94be377879e5986498f7e1198ede621f0ceea2af5fd85d597a90
+[root@build11yixuan20180519 ~]# docker images |grep cyx
+docker.io/cs2cdocker/cs2c_apachev7.4ssh                           cyx20180525build11   477a4caf8dac        9 seconds ago       552 MB
+ns7.4ssh12                                                        cyx2                 d2eebe82fe0e        22 hours ago        558 MB
+registry.cn-beijing.aliyuncs.com/yixuan/ddd                       apachsshcyxpass1     d2eebe82fe0e        22 hours ago        558 MB
+ns7.4ssh11                                                        cyx1                 65f38f841a58        22 hours ago        620 MB
+testapache                                                        1.1cyx               1b223b6f9cc9        4 days ago          493 MB
+cyxtestapach                                                      cyx1                 513d835963b9        5 months ago        493 MB
+sshtest                                                           v1.1.cyx20180522     78fa0a3e7293        5 months ago        431 MB
+test2_sshd                                                        cyx2                 78fa0a3e7293        5 months ago        431 MB
+test3_sshd                                                        cyx3                 78fa0a3e7293        5 months ago        431 MB
+testcs2c_sshd                                                     cyx1                 78fa0a3e7293        5 months ago        431 MB
+testmariadb                                                       cyx1                 1d0d61483755        6 months ago        476 MB
+testnkas6.5                                                       1.1cyx               f3451a50e4f8        3 years ago         557 MB
+[root@build11yixuan20180519 ~]# docker tag 477a4caf8dac registry.cn-beijing.aliyuncs.com/yixuan/ddd:cs2c_apachev7.4ssh20180525build11cyxpass
+[root@build11yixuan20180519 ~]# docker images |grep cyx
+docker.io/cs2cdocker/cs2c_apachev7.4ssh                           cyx20180525build11                         477a4caf8dac        About a minute ago   552 MB
+registry.cn-beijing.aliyuncs.com/yixuan/ddd                       cs2c_apachev7.4ssh20180525build11cyxpass   477a4caf8dac        About a minute ago   552 MB
+ns7.4ssh12                                                        cyx2                                       d2eebe82fe0e        22 hours ago         558 MB
+registry.cn-beijing.aliyuncs.com/yixuan/ddd                       apachsshcyxpass1                           d2eebe82fe0e        22 hours ago         558 MB
+ns7.4ssh11                                                        cyx1                                       65f38f841a58        22 hours ago         620 MB
+testapache                                                        1.1cyx                                     1b223b6f9cc9        4 days ago           493 MB
+cyxtestapach                                                      cyx1                                       513d835963b9        5 months ago         493 MB
+test2_sshd                                                        cyx2                                       78fa0a3e7293        5 months ago         431 MB
+test3_sshd                                                        cyx3                                       78fa0a3e7293        5 months ago         431 MB
+testcs2c_sshd                                                     cyx1                                       78fa0a3e7293        5 months ago         431 MB
+sshtest                                                           v1.1.cyx20180522                           78fa0a3e7293        5 months ago         431 MB
+testmariadb                                                       cyx1                                       1d0d61483755        6 months ago         476 MB
+testnkas6.5                                                       1.1cyx                                     f3451a50e4f8        3 years ago          557 MB
+[root@build11yixuan20180519 ~]# docker push 477a4caf8dac^C
+[root@build11yixuan20180519 ~]# docker inspect 477a4caf8dac
+[
+    {
+        "Id": "sha256:477a4caf8dac94be377879e5986498f7e1198ede621f0ceea2af5fd85d597a90",
+        "RepoTags": [
+            "docker.io/cs2cdocker/cs2c_apachev7.4ssh:cyx20180525build11",
+            "registry.cn-beijing.aliyuncs.com/yixuan/ddd:cs2c_apachev7.4ssh20180525build11cyxpass"
+        ],
+        "RepoDigests": [],
+        "Parent": "sha256:513d835963b937144f63a96e30c5278823044de2ce9ac1b2a6da8f86a25196b5",
+        "Comment": "修改了yum网络源，yum install openssh-clients",
+        "Created": "2018-05-26T03:44:01.327621717Z",
+        "Container": "71e90b61a3278b16b5a30d4b9bc9d81268206562ffc1b105ccc06897a8920c0b",
+        "ContainerConfig": {
+            "Hostname": "71e90b61a327",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "22/tcp": {},
+                "80/tcp": {}
+            },
+            "Tty": true,
+            "OpenStdin": true,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "DEBIAN_FRONTEND=noninteractive",
+                "APACHE_RUN_USER=www-data",
+                "APACHE_RUN_GROUP=www-data",
+                "APACHE_LOG_DIR=/var/log/apache2",
+                "APACHE_PID_FILE=/var/run/apache2.pid",
+                "APACHE_RUN_DIR=/var/run/apache2",
+                "APACHE_LOCK_DIR=/var/lock/apache2",
+                "APACHE_SERVERADMIN=admin@localhost",
+                "APACHE_SERVERNAME=localhost",
+                "APACHE_SERVERALIAS=docker.localhost",
+                "APACHE_DOCUMENTROOT=/var/www"
+            ],
+            "Cmd": [
+                "/run.sh"
+            ],
+            "ArgsEscaped": true,
+            "Image": "docker.io/cs2cdocker/cs2c_apache",
+            "Volumes": null,
+            "WorkingDir": "/",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "DockerVersion": "1.13.1",
+        "Author": "yixuan.cheng <2319516602@qq.com>",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "22/tcp": {},
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "DEBIAN_FRONTEND=noninteractive",
+                "APACHE_RUN_USER=www-data",
+                "APACHE_RUN_GROUP=www-data",
+                "APACHE_LOG_DIR=/var/log/apache2",
+                "APACHE_PID_FILE=/var/run/apache2.pid",
+                "APACHE_RUN_DIR=/var/run/apache2",
+                "APACHE_LOCK_DIR=/var/lock/apache2",
+                "APACHE_SERVERADMIN=admin@localhost",
+                "APACHE_SERVERNAME=localhost",
+                "APACHE_SERVERALIAS=docker.localhost",
+                "APACHE_DOCUMENTROOT=/var/www"
+            ],
+            "Cmd": [
+                "/run.sh"
+            ],
+            "ArgsEscaped": true,
+            "Image": "",
+            "Volumes": null,
+            "WorkingDir": "/",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        },
+        "Architecture": "mips64le",
+        "Os": "linux",
+        "Size": 551627676,
+        "VirtualSize": 551627676,
+        "GraphDriver": {
+            "Name": "overlay2",
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/1ddb0a278a48c14dd834f79a411fbd41d817b9a82b8717671708c4469bb41af1/diff:/var/lib/docker/overlay2/504ab8ac57c32e7a764dd31ed90375173cc5f16f6fee25ff1f20ac51d15b6a76/diff:/var/lib/docker/overlay2/23d33ca7c74fda6ceb28ff870a4a6d5f48b056c8f75ad7ee39240d540d7e7a99/diff:/var/lib/docker/overlay2/1e280e3db364e31e999feabc0c1bb187b37a186cafe958527ed2c5f13d0c0410/diff:/var/lib/docker/overlay2/eaa127233f1265d2dd71c0e8eed442aafd6b499a4252a80b9d32b0b2cb68bb7a/diff:/var/lib/docker/overlay2/08b080bf34894324b543548e737e7ad6cf8908a12ff40890129153acf8f5358f/diff:/var/lib/docker/overlay2/e1bc57fb26c195d7d587cb5985438ee5a0f490cf876f2cd5ae35af69c92dc574/diff:/var/lib/docker/overlay2/9418b0ef256d8e3951e98d7531f62977a2bb54406cdc9ef939f7cff2871a343c/diff:/var/lib/docker/overlay2/01f8c6f0546e9cde8f5209a74a1cc66ab60cb76a08a2c741c25a37c6bcf89e1b/diff:/var/lib/docker/overlay2/7a1eb4fa92dac85cc9911872b1b58575dce1c375191a09396a53444ccbd8ee1f/diff:/var/lib/docker/overlay2/3af2cff89746ef78b45ef7cbdf904832c7cc810b34b4846afb644722df9e95c9/diff:/var/lib/docker/overlay2/3d5445181fe732715cb1a56e32d58f7d3dd96afcf2e5490390b2c07fa73e4d1a/diff",
+                "MergedDir": "/var/lib/docker/overlay2/f3ef0f07e573e376679ceb741c41ac553b426a88028591aec8ebb564cff18026/merged",
+                "UpperDir": "/var/lib/docker/overlay2/f3ef0f07e573e376679ceb741c41ac553b426a88028591aec8ebb564cff18026/diff",
+                "WorkDir": "/var/lib/docker/overlay2/f3ef0f07e573e376679ceb741c41ac553b426a88028591aec8ebb564cff18026/work"
+            }
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:695740cc2aeed3dd15aa02292f83109c30339362af3f5548ba955564edca68e6",
+                "sha256:a550dd0be346b0b8af4c034c855652bd403ca10c205a7c4a3469475cfba5d5f3",
+                "sha256:ed14cb1eee5becfe0cbb317d38e57a3591ff24b9649a48ece83385247fcbfc51",
+                "sha256:ce0248e930e8b20e83cc67acca5bc8bd9a00dce4eb93fcb71284f8b7bfc04660",
+                "sha256:b13a3194c37e01171ab083bfdbc3603a3dc21d5f1c271eb7b16084cbc186d9a1",
+                "sha256:7f10b7fb7c352d456da049b1d5ab4fa990cb2219740fb3a987f398937ce39f37",
+                "sha256:5e5a64f0c4034693ab2acb3240cf4ebf9b94f9d61727d944a8bbd5286beadc9c",
+                "sha256:3f2c8637055256043da3203ce3872ace016340ae3fdcf0573374b3dea3ad527a",
+                "sha256:5b6d11635f2bf613dea223085f20749b966ef0074c4516f23872667190c002c2",
+                "sha256:d2880cfe18f0bdf80078748f4c22e80c5443f3ebac6ecdbcdf96a85623d7405c",
+                "sha256:9ebfb22ddc3e6c4acbedef4940253363aad47254e8137903393e5bbcdb6a40a6",
+                "sha256:ce789385a12c61591277b431c0a6070a1c419b1943c65af7eab48f0068a8534a",
+                "sha256:76369a49b9e7bebefa37b748e3b70cb53608dfc737a33f0fc6aa2dd77d4861ae"
+            ]
+        }
+    }
+]
+
+
+
+
+
+
+#############
+[root@build11yixuan20180519 ~]# docker run --name apachev7.4build11ssh20180526 -dit -P registry.cn-beijing.aliyuncs.com/yixuan/ddd:cs2c_apachev7.4ssh20180525build11cyxpass /bin/bash
+241e709d28e3687a5dd610049b74094ea5f71710b92118387496952c305ab95b
+[root@build11yixuan20180519 ~]# docker ps
+CONTAINER ID        IMAGE                                                                                  COMMAND             CREATED             STATUS              PORTS                                          NAMES
+241e709d28e3        registry.cn-beijing.aliyuncs.com/yixuan/ddd:cs2c_apachev7.4ssh20180525build11cyxpass   "/bin/bash"         2 seconds ago       Up 1 second         0.0.0.0:32778->22/tcp, 0.0.0.0:32777->80/tcp   apachev7.4build11ssh20180526
+78f97056c846        513d835963b9                                                                           "/run.sh"           22 hours ago        Up 22 hours         22/tcp, 80/tcp                                 ssh22
+ffb8b4b1954a        513d835963b9                                                                           "/run.sh"           22 hours ago        Up 22 hours         22/tcp, 80/tcp                                 ssh21
+6df47c3bc26c        docker.io/cs2cdocker/cs2c_apache                                                       "/run.sh"           25 hours ago        Up 25 hours         0.0.0.0:32774->22/tcp, 0.0.0.0:32773->80/tcp   ssh12
+6505231a3e45        docker.io/cs2cdocker/cs2c_apache                                                       "/run.sh"           25 hours ago        Up 25 hours         0.0.0.0:32772->22/tcp, 0.0.0.0:32771->80/tcp   ssh11
+71e90b61a327        docker.io/cs2cdocker/cs2c_apache                                                       "/run.sh"           26 hours ago        Up 26 hours         0.0.0.0:32770->22/tcp, 0.0.0.0:32769->80/tcp   boring_curie
+[root@build11yixuan20180519 ~]# 
+
+
+
+[root@build11yixuan20180519 ~]# docker push --help
+
+Usage:	docker push [OPTIONS] NAME[:TAG]
+
+Push an image or a repository to a registry
+
+Options:
+      --disable-content-trust   Skip image verification (default true)
+      --help                    Print usage
+[root@build11yixuan20180519 ~]# docker push registry.cn-beijing.aliyuncs.com/yixuan/ddd:cs2c_apachev7.4ssh20180525build11cyxpass
+The push refers to a repository [registry.cn-beijing.aliyuncs.com/yixuan/ddd]
+76369a49b9e7: Pushed 
+ce789385a12c: Layer already exists 
+9ebfb22ddc3e: Layer already exists 
+d2880cfe18f0: Layer already exists 
+5b6d11635f2b: Layer already exists 
+3f2c86370552: Layer already exists 
+5e5a64f0c403: Layer already exists 
+7f10b7fb7c35: Layer already exists 
+b13a3194c37e: Layer already exists 
+ce0248e930e8: Layer already exists 
+ed14cb1eee5b: Layer already exists 
+a550dd0be346: Layer already exists 
+695740cc2aee: Layer already exists 
+cs2c_apachev7.4ssh20180525build11cyxpass: digest: sha256:ed249feb71d9d7d9b918afd993df1ad2a07891463ad9408cb24e9717fc0ae2b9 size: 3040
+[root@build11yixuan20180519 ~]# 
+
+
