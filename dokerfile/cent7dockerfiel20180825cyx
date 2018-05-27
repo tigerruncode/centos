@@ -180,9 +180,9 @@ ad801df2e7b0        openshift/origin-pod:v3.9.0   "/usr/bin/pod"           3 day
 ##############
 [root@openshift mynginx]# curl http://10.1.40.79:32768
 curl: (7) Failed connect to 10.1.40.79:32768; 拒绝连接
-
+#不进容器不输入命令# nginx，# nginx服务不启动不清楚为啥？？？？？？？？？？？？？？？？？？？？//
 ######################
-进入容器后，输入命令
+进入容器后，输入命令# nginx
 ####################
 
 [root@openshift ~]# docker exec -it b0fa0c8d80be /bin/bash
