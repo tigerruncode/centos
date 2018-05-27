@@ -1,0 +1,217 @@
+[root@openshift opt]# mkdir /ddd
+[root@openshift opt]# cd /ddd/
+[root@openshift ddd]# ll
+总用量 0
+[root@openshift ddd]# mkdir mynginx
+[root@openshift ddd]# cd mynginx/
+[root@openshift mynginx]# ll
+总用量 0
+[root@openshift mynginx]# touch Dockerfile
+[root@openshift mynginx]# vim Dockerfile 
+[root@openshift mynginx]# ll /usr/share/nginx/html/index.html
+ls: 无法访问/usr/share/nginx/html/index.html: 没有那个文件或目录
+[root@openshift mynginx]# ll
+总用量 4
+-rw-r--r-- 1 root root 81 5月  26 19:35 Dockerfile
+[root@openshift mynginx]# cat Dockerfile 
+FROM nginx
+#######原始镜像nginx
+RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
+[root@openshift mynginx]# docker build --help
+
+Usage:	docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+
+Options:
+      --build-arg list             Set build-time variables (default [])
+      --cache-from stringSlice     Images to consider as cache sources
+      --cgroup-parent string       Optional parent cgroup for the container
+      --compress                   Compress the build context using gzip
+      --cpu-period int             Limit the CPU CFS (Completely Fair Scheduler) period
+      --cpu-quota int              Limit the CPU CFS (Completely Fair Scheduler) quota
+  -c, --cpu-shares int             CPU shares (relative weight)
+      --cpuset-cpus string         CPUs in which to allow execution (0-3, 0,1)
+      --cpuset-mems string         MEMs in which to allow execution (0-3, 0,1)
+      --disable-content-trust      Skip image verification (default true)
+  -f, --file string                Name of the Dockerfile (Default is 'PATH/Dockerfile')
+      --force-rm                   Always remove intermediate containers
+      --help                       Print usage
+      --isolation string           Container isolation technology
+      --label list                 Set metadata for an image (default [])
+  -m, --memory string              Memory limit
+      --memory-swap string         Swap limit equal to memory plus swap: '-1' to enable unlimited swap
+      --network string             Set the networking mode for the RUN instructions during build (default "default")
+      --no-cache                   Do not use cache when building the image
+      --pull                       Always attempt to pull a newer version of the image
+  -q, --quiet                      Suppress the build output and print image ID on success
+      --rm                         Remove intermediate containers after a successful build (default true)
+      --security-opt stringSlice   Security options
+      --shm-size string            Size of /dev/shm, default value is 64MB
+  -t, --tag list                   Name and optionally a tag in the 'name:tag' format (default [])
+      --ulimit ulimit              Ulimit options (default [])
+  -v, --volume list                Set build-time bind mounts (default [])
+[root@openshift mynginx]# docker build -t nginx
+nginx     nginx:v2  
+[root@openshift mynginx]# docker build -t nginx:v8
+"docker build" requires exactly 1 argument(s).
+See 'docker build --help'.
+
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+[root@openshift mynginx]# docker images |grep nginx
+nginx                                                          v2                  b9df0a44dea2        5 days ago          109 MB
+172.30.1.1:5000/test1/nginx-ex                                 latest              c7a0b2491558        2 weeks ago         329 MB
+172.30.1.1:5000/twoproject20180511/nginx-ex                    latest              b4d03cb60e6f        2 weeks ago         329 MB
+172.30.1.1:5000/webcaseadmin20180511/nginx-ex                  latest              55b6747719a1        2 weeks ago         329 MB
+docker.io/centos/nginx-112-centos7                             <none>              c8365d2afddc        3 weeks ago         328 MB
+cent7nginx                                                     cyx20180526file1    ae513a47849c        3 weeks ago         109 MB
+docker.io/nginx                                                latest              ae513a47849c        3 weeks ago         109 MB
+[root@openshift mynginx]# docker build -t cent7nginx:cyx20180526file1
+"docker build" requires exactly 1 argument(s).
+See 'docker build --help'.
+
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+[root@openshift mynginx]# docker build -t docker.io/nginx
+"docker build" requires exactly 1 argument(s).
+See 'docker build --help'.
+
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+
+
+#############
+# docker build -t cent7nginx:cyx20180526file1 .
+##cent7nginx:cyx20180526file1是新镜像名称
+## .是新镜像保存的位置
+###########
+[root@openshift mynginx]# docker build -t cent7nginx:cyx20180526file1 .
+Sending build context to Docker daemon 2.048 kB
+Step 1/2 : FROM nginx
+ ---> ae513a47849c
+Step 2/2 : RUN echo '<h1>Hello, Docker!</h1>' > /usr/share/nginx/html/index.html
+ ---> Running in ce51d4ccd8aa
+
+ ---> b236a9da2ff5
+Removing intermediate container ce51d4ccd8aa
+Successfully built b236a9da2ff5
+
+
+
+
+
+################
+
+
+
+从命令的输出结果中，我们可以清晰的看到镜像的构建过程。在 Step 2/2 中，如同我们之前所说的那样，RUN 指令启动了一个容器 f3f1e0d41576，执行了所要求的命令，并最后提交了这一层 e189d22f23b5，随后删除了所用到的这个容器 f3f1e0d41576。
+
+这里我们使用了 docker build 命令进行镜像构建。其格式为：
+
+docker build [选项] <上下文路径/URL/->
+在这里我们指定了最终镜像的名称 -t nginx:v3，构建成功后，我们可以像之前运行 nginx:v2 那样来运行这个镜像，其结果会和 nginx:v2 一样。
+
+#####
+镜像构建上下文（Context）
+如果注意，会看到 docker build 命令最后有一个 .。. 表示当前目录，而 Dockerfile 就在当前目录，因此不少初学者以为这个路径是在指定 Dockerfile 所在路径，这么理解其实是不准确的。如果对应上面的命令格式，你可能会发现，这是在指定上下文路径。那么什么是上下文呢？
+
+###########
+
+
+[root@openshift mynginx]# ls
+Dockerfile
+[root@openshift mynginx]# docker ps
+CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS               NAMES
+67ba6c5bd159        docker.io/centos              "/bin/bash"              2 days ago          Up 2 days                               blissful_jang
+c40bdf317e9b        45f47bc77de8                  "/bin/sh -c '/usr/..."   3 days ago          Up 3 days                               k8s_registry_docker-registry-1-wx54j_default_8a128cb4-5e5c-11e8-a9e3-8c89a52189fc_0
+fe87bb0c7c3c        6d397283b924                  "/usr/bin/origin-w..."   3 days ago          Up 3 days                               k8s_webconsole_webconsole-7dfbffd44d-grcx8_openshift-web-console_896da4d5-5e5c-11e8-a9e3-8c89a52189fc_0
+b0a548055d2f        openshift/origin-pod:v3.9.0   "/usr/bin/pod"           3 days ago          Up 3 days                               k8s_POD_docker-registry-1-wx54j_default_8a128cb4-5e5c-11e8-a9e3-8c89a52189fc_0
+d7c6481cd432        openshift/origin-pod:v3.9.0   "/usr/bin/pod"           3 days ago          Up 3 days                               k8s_POD_router-1-jvp25_default_89ebb461-5e5c-11e8-a9e3-8c89a52189fc_0
+ad801df2e7b0        openshift/origin-pod:v3.9.0   "/usr/bin/pod"           3 days ago          Up 3 days                               k8s_POD_webconsole-7dfbffd44d-grcx8_openshift-web-console_896da4d5-5e5c-11e8-a9e3-8c89a52189fc_0
+60f65b5e3a70        openshift/origin:v3.9.0       "/usr/bin/openshif..."   3 days ago          Up 3 days                               origin
+[root@openshift mynginx]# docker images |grep ng
+cent7nginx                                                     cyx20180526file1    b236a9da2ff5        About a minute ago   109 MB
+registry.cn-beijing.aliyuncs.com/yixuan/ddd                    v1.1pushcentos      259156df7019        5 days ago           199 MB
+nginx                                                          v2                  b9df0a44dea2        5 days ago           109 MB
+172.30.1.1:5000/test1/nginx-ex                                 latest              c7a0b2491558        2 weeks ago          329 MB
+172.30.1.1:5000/twoproject20180511/nginx-ex                    latest              b4d03cb60e6f        2 weeks ago          329 MB
+172.30.1.1:5000/webcaseadmin20180511/nginx-ex                  latest              55b6747719a1        2 weeks ago          329 MB
+172.30.1.1:5000/webcaseadmin20180511/nodejs-mongo-persistent   latest              8b47fcbf6081        2 weeks ago          518 MB
+172.30.1.1:5000/webcase20180511/django-ex                      latest              122c48208ccf        2 weeks ago          677 MB
+docker.io/centos/mongodb-32-centos7                            <none>              04f559118c87        3 weeks ago          461 MB
+docker.io/centos/nginx-112-centos7                             <none>              c8365d2afddc        3 weeks ago          328 MB
+docker.io/nginx                                                latest              ae513a47849c        3 weeks ago          109 MB
+registry.cn-beijing.aliyuncs.com/yixuan/ddd                    v1.3push            78fa0a3e7293        5 months ago         431 MB
+docker.io/98weiting09/nkas6.5                                  latest              f3451a50e4f8        3 years ago          557 MB
+[root@openshift mynginx]# 
+
+
+##########
+
+
+[root@openshift mynginx]# docker images |grep nginx
+cent7nginx                                                     cyx20180526file1    b236a9da2ff5        15 hours ago        109 MB
+nginx                                                          v2                  b9df0a44dea2        6 days ago          109 MB
+172.30.1.1:5000/test1/nginx-ex                                 latest              c7a0b2491558        2 weeks ago         329 MB
+172.30.1.1:5000/twoproject20180511/nginx-ex                    latest              b4d03cb60e6f        2 weeks ago         329 MB
+172.30.1.1:5000/webcaseadmin20180511/nginx-ex                  latest              55b6747719a1        2 weeks ago         329 MB
+docker.io/centos/nginx-112-centos7                             <none>              c8365d2afddc        3 weeks ago         328 MB
+docker.io/nginx                                                latest              ae513a47849c        3 weeks ago         109 MB
+[root@openshift mynginx]# 
+
+
+####
+
+[root@openshift ~]# docker run -dit -P cent7nginx:cyx20180526file1 /bin/bash
+b0fa0c8d80bea41b503ccb64186b1b12bd7b23b1c1139a7063eb08410cc65b5a
+[root@openshift ~]# docker ps
+CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                   NAMES
+b0fa0c8d80be        cent7nginx:cyx20180526file1   "/bin/bash"              3 seconds ago       Up 2 seconds        0.0.0.0:32768->80/tcp   priceless_bohr
+67ba6c5bd159        docker.io/centos              "/bin/bash"              2 days ago          Up 2 days                                   blissful_jang
+c40bdf317e9b        45f47bc77de8                  "/bin/sh -c '/usr/..."   3 days ago          Up 3 days                                   k8s_registry_docker-registry-1-wx54j_default_8a128cb4-5e5c-11e8-a9e3-8c89a52189fc_0
+fe87bb0c7c3c        6d397283b924                  "/usr/bin/origin-w..."   3 days ago          Up 3 days                                   k8s_webconsole_webconsole-7dfbffd44d-grcx8_openshift-web-console_896da4d5-5e5c-11e8-a9e3-8c89a52189fc_0
+b0a548055d2f        openshift/origin-pod:v3.9.0   "/usr/bin/pod"           3 days ago          Up 3 days                                   k8s_POD_docker-registry-1-wx54j_default_8a128cb4-5e5c-11e8-a9e3-8c89a52189fc_0
+d7c6481cd432        openshift/origin-pod:v3.9.0   "/usr/bin/pod"           3 days ago          Up 3 days                                   k8s_POD_router-1-jvp25_default_89ebb461-5e5c-11e8-a9e3-8c89a52189fc_0
+ad801df2e7b0        openshift/origin-pod:v3.9.0   "/usr/bin/pod"           3 days ago          Up 3 days                                   k8s_POD_webconsole-7dfbffd44d-grcx8_openshift-web-console_896da4d5-5e5c-11e8-a9e3-8c89a52189fc_0
+##############
+[root@openshift mynginx]# curl http://10.1.40.79:32768
+curl: (7) Failed connect to 10.1.40.79:32768; 拒绝连接
+
+######################
+进入容器后，输入命令
+####################
+
+[root@openshift ~]# docker exec -it b0fa0c8d80be /bin/bash
+root@b0fa0c8d80be:/# ls
+bin  boot  dev	etc  home  lib	lib64  media  mnt  opt	proc  root  run  sbin  srv  sys  tmp  usr  var
+root@b0fa0c8d80be:/# cd usr/bin/
+
+root@b0fa0c8d80be:/usr/bin# cat /usr/share/nginx/html/index.html
+<h1>Hello, Docker!</h1>
+
+root@b0fa0c8d80be:/usr/bin# nginx
+root@b0fa0c8d80be:/usr/bin# 10.1.40.79 - - [27/May/2018:04:35:11 +0000] "GET / HTTP/1.1" 200 24 "-" "curl/7.29.0" "-"
+10.1.40.79 - - [27/May/2018:04:35:16 +0000] "GET / HTTP/1.1" 200 24 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0" "-"
+2018/05/27 04:35:16 [error] 71#71: *2 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 10.1.40.79, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "10.1.40.79:32768"
+10.1.40.79 - - [27/May/2018:04:35:16 +0000] "GET /favicon.ico HTTP/1.1" 404 170 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0" "-"
+10.1.40.79 - - [27/May/2018:04:42:13 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0" "-"
+10.1.40.79 - - [27/May/2018:04:42:14 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0" "-"
+^C
+root@b0fa0c8d80be:/usr/bin# 10.1.40.79 - - [27/May/2018:04:42:17 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0" "-"
+10.1.40.79 - - [27/May/2018:04:42:18 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0" "-"
+
+
+####################
+在打开一个终端
+[root@openshift mynginx]# curl http://10.1.40.79:32768
+<h1>Hello, Docker!</h1>
+
+###########
+打开网页 火狐：输入http://10.1.40.79:32768
+页面显示
+<h1>Hello, Docker!</h1>
+

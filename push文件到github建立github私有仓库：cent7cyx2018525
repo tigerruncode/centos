@@ -1,5 +1,14 @@
 ##########
 在你要push的文件的目录 右健打开终端，建立github私有仓库
+
+
+########
+# git init 
+]#  git config --global user.name "tigerruncode"
+ 
+[root@localhost .git]#  git config --global user.email 23#######2@qq.com
+[root@localhost .git]# git config --list
+
 #############
 # git init 
 初始化空的 Git 版本库于 /root/Desktop/523xiehao/dockerjieguo/docker push/.git/
@@ -148,4 +157,30 @@ To https://github.com/tigerruncode/centos.git
 
 
 ##########
+
+下载镜像仓库 git pull
+
+
+########
+
+]# git clone https://github.com/tigerruncode/centos.git
+正克隆到 'centos'...
+remote: Counting objects: 19, done.
+remote: Compressing objects: 100% (14/14), done.
+remote: Total 19 (delta 6), reused 13 (delta 3), pack-reused 0
+Unpacking objects: 100% (19/19), done.
+[root@localhost Docker使用Link在容器之间建立连接]# ll
+总用量 12
+drwxr-xr-x. 3 root root 4096 5月  26 19:13 centos
+-rw-r--r--. 1 root root 4064 5月  25 13:42 Centos7创建支持ssh服务器的docker容器
+-rw-r--r--. 1 root root 3696 5月  25 13:39 Docker使用Link在容器之间建立连接
+[root@localhost Docker使用Link在容器之间建立连接]# cd centos/
+[root@localhost centos]# ll
+总用量 40
+-rw-r--r--. 1 root root 15149 5月  26 19:13 docker push
+-rw-r--r--. 1 root root  1323 5月  26 19:13 docker常用命令
+-rw-r--r--. 1 root root  5490 5月  26 19:13 push文件到github建立github私有仓库：cent7cyx2018525
+-rw-r--r--. 1 root root    27 5月  26 19:13 README.md
+-rw-r--r--. 1 root root  4906 5月  26 19:13 仓库基本使用
+[root@localhost centos]# cat docker
 
