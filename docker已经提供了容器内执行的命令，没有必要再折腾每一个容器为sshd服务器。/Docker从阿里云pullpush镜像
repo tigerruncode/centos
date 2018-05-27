@@ -110,3 +110,137 @@ $ sudo docker tag 37bb9c63c8b2 registry.cn-hangzhou.aliyuncs.com/acs/agent:0.7-d
 
 $ sudo docker push registry.cn-hangzhou.aliyuncs.com/acs/agent
 从内网push镜像，速度将大大提升，并且将不会损耗您的公网流量。注意，如果您申请的机器是在vpc网络的，请使用registry-cn-hangzhou-vpc.aliyuncs.com的域名前缀进行推送
+
+
+#################
+
+docker使用阿里云镜像仓库
+2016年09月01日 16:09:23
+阅读数：36044
+1：阿里云docker仓库 https://dev.aliyun.com/search.html
+
+2：进去注册帐号后，点击自己的管理中心。
+
+3：在管理中心点击加速器，右边面板会有你的加速地址，右边面板下面有详细设置步骤。 
+以下代码用于检测你有没有开启加速器
+
+sudo  ps -ef | grep 
+root     17825     1  0 16:50 ?        00:00:11 /usr/bin/dockerd --registry-mirror=https://no1pfk8z.mirror.aliyuncs.com --registry-mirror=https://no1pfk8z.mirror.aliyuncs.com --registry-mirror=https://n42ocvxt.mirror.aliyuncs.com --raw-logs
+1
+2
+有如上的信息输出代表你已经成功了
+
+4：使用commit构建镜像，执行命令
+
+ docker pull centos:latest
+ sudo docker run -it -p 80 --name willian centos /bin/bash
+1
+2
+在bash安装所需要的运行的环境
+
+ sudo docker commit -a 'ss' willian willian/java8
+1
+将镜像提交到本地仓库
+
+sudo docker images
+1
+这时可以看到你自己的镜像
+
+  $ sudo docker login --username=willian19960118 registry.cn-hangzhou.aliyuncs.com
+1
+2
+给阿里云仓库打tag
+
+  $ sudo docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/willianevils/zhangweilun:[镜像版本号]
+1
+2
+push
+
+$ sudo docker push registry.cn-hangzhou.aliyuncs.com/willianevils/zhangweilun:[镜像版本号]
+
+
+
+#############
+
+Docker镜像上传到阿里云
+2017年08月01日 13:17:40
+阅读数：4805
+2017.07.19
+
+参考视频：https://ninghao.net/video/3780
+
+Docker镜像上传到阿里云
+
+1 安装Docker运行环境
+
+       参考文档：https://docs.docker.com
+
+2 注册阿里云账户
+
+       阿里云官方网站链接：https://dev.aliyun.com/search.html
+
+       例如：
+
+       账户：msjtest
+
+       密码：123456
+
+3 登陆账户
+
+4 管理Docker Hub镜像站点：配置Docker加速器
+
+       链接：https://cr.console.aliyun.com/?spm=5176.1971733.0.2.duOGn4#/accelerator
+
+5 创建镜像仓库的命名空间
+
+       例如：msj
+
+       链接：https://cr.console.aliyun.com/?spm=5176.1971733.0.2.duOGn4#/namespace/index
+
+6 创建镜像仓库
+
+       例如：image-test
+
+       链接：https://cr.console.aliyun.com/?spm=5176.1971733.0.2.duOGn4#/imageList
+
+7 操作指南
+
+1）登录阿里云docker registry:
+
+$ sudo dockerlogin --username=msjtest registry.cn-hangzhou.aliyuncs.com
+
+注：登录registry的用户名是您的阿里云账号全名，密码是开通namespace时设置的密码。
+
+2）从registry中拉取镜像：
+
+$ sudo dockerpull registry.cn-hangzhou.aliyuncs.com/msj/image-test:[镜像版本号]
+
+3）将镜像推送到registry：
+
+$ sudo dockerlogin --username=mashujie registry.cn-hangzhou.aliyuncs.com
+
+$ sudo dockertag [ImageId] registry.cn-hangzhou.aliyuncs.com/msj/image-test:[镜像版本号]
+
+$ sudo dockerpush registry.cn-hangzhou.aliyuncs.com/msj/image-test:[镜像版本号]
+
+其中[ImageId],[镜像版本号]请你根据自己的镜像信息进行填写。
+
+8 终端执行脚本代码
+
+       #登陆命令
+
+       $ docker login --username=mashujieregistry.cn-hangzhou.aliyuncs.com
+
+       #查看主机镜像
+
+       $ docker images
+
+       #复制镜像ID并设置tag (或者tag repository:tag)
+
+       $ docker tag 96eecaf1019a registry.cn-hangzhou.aliyuncs.com/msj/image-test:helloimage01
+
+       $ docker tag image01:01registry.cn-hangzhou.aliyuncs.com/msj/image-test:helloimage01
+
+       #上传镜像到阿里云镜像仓库
+
+       $ docker pushregistry.cn-hangzhou.aliyuncs.com/msj/image-test:helloimage01
