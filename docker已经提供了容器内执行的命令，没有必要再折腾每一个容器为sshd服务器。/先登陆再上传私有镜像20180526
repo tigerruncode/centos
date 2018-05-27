@@ -1,0 +1,15 @@
+########
+aliyun先登陆再上传私有镜像20180526"
+###########
+[root@openshift mynginx]#  docker login --username=188####### registry.cn-beijing.aliyuncs.com
+Password: 
+Login Succeeded
+[root@openshift mynginx]# docker push registry.cn-beijing.aliyuncs.com/yixuan/ddd:cent7nginx20180526_nginx_dockerfile
+The push refers to a repository [registry.cn-beijing.aliyuncs.com/yixuan/ddd]
+f50cf89f48d5: Pushed 
+7ab428981537: Pushed 
+82b81d779f83: Pushed 
+d626a8ad97a1: Pushed 
+cent7nginx20180526_nginx_dockerfile: digest: sha256:61f629dcff903a2475770992731aba3ed54ac9f1ecaff45dc7dd63992de9caf8 size: 1155
+[root@openshift mynginx]# 
+
